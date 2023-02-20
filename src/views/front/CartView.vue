@@ -33,14 +33,7 @@
               <td>
                 <div class="input-group input-group-sm">
                   <div class="input-group mb-3">
-                    <select
-                      name=""
-                      id=""
-                      class="form-control"
-                      v-model="item.qty"
-                      @change="updateCartItem(item)"
-                      :disabled="item.id === loadingItem"
-                    >
+                    <select name="" id="" class="form-control" v-model="item.qty" @change="updateCartItem(item)" :disabled="item.id === loadingItem">
                       <option :value="i" v-for="i in 20" :key="`${i}unit`">
                         {{ i }}
                       </option>
