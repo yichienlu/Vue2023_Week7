@@ -49,7 +49,7 @@
         </tr>
       </tbody>
     </table>
-    <pagination :pages="pagination"  @change-page="getAdminProducts"></pagination>
+    <!-- <pagination :pages="pagination"  @change-page="getAdminProducts"></pagination> -->
   </div>
 </template>
 
@@ -67,31 +67,20 @@ export default {
     }
   },
   methods: {
-    checkAdmin(){
-      axios.post(`${api_url}/api/user/check`)
-      .then((res)=>{
-        this.getAdminProducts();
-      })
-      .catch((err)=>{
-        // console.dir(err.data.message)
-        alert(err.data.message)
-        window.location = 'index.html'
-      })
-    },
     getAdminProducts(page = 1){
-      axios.get(`${api_url}/api/${api_path}/admin/products?page=${page}`)
+      this.$http.get(`${VITE_URL}/api/${VITE_PATH}/admin/products?page=${page}`)
       .then((res)=>{
-        // console.log(res.data)
-        this.pagination = res.data.pagination
+        console.log(res.data)
+        // this.pagination = res.data.pagination
         this.products = res.data.products
       })
     },
     addProduct(){
-      axios.post(`${api_url}/api/${api_path}/admin/product`, {"data":this.tempProduct})
+      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/product`, {"data":this.tempProduct})
       .then((res)=>{
-        // console.log(res.data)
-        productModal.hide();
-        alert(res.data.message);
+        console.log(res.data)
+        // productModal.hide();
+        // alert(res.data.message);
         this.getAdminProducts()
         
       })
@@ -101,11 +90,11 @@ export default {
       })
     },
     editProduct(id){
-      axios.put(`${api_url}/api/${api_path}/admin/product/${id}`,{"data":this.tempProduct})
+      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/product/${id}`,{"data":this.tempProduct})
       .then((res)=>{
-        // console.log(res.data)
-        productModal.hide();
-        alert(res.data.message);
+        console.log(res.data)
+        // productModal.hide();
+        // alert(res.data.message);
         this.getAdminProducts()
       })
       .catch((err)=>{
@@ -114,7 +103,7 @@ export default {
       })
     },
     deleteProduct(id){
-      axios.delete(`${api_url}/api/${api_path}/admin/product/${id}`)
+      this.$http.delete(`${VITE_URL}/api/${VITE_PATH}/admin/product/${id}`)
       .then((res)=>{
         // console.log(res.data)
         this.getAdminProducts()
@@ -129,7 +118,7 @@ export default {
       const formData = new FormData();
       formData.append('file-to-upload', file)
 
-      axios.post(`${api_url}/api/${api_path}/admin/upload`, formData)
+      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/upload`, formData)
       .then((res)=>{
         // console.log(res)
         this.tempProduct.imageUrl = res.data.imageUrl
@@ -144,7 +133,7 @@ export default {
       const formData = new FormData();
       formData.append('file-to-upload', file)
 
-      axios.post(`${api_url}/api/${api_path}/admin/upload`, formData)
+      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/upload`, formData)
       .then((res)=>{
         // console.log(res)
         this.tempProduct.imagesUrl[index] = res.data.imageUrl
@@ -155,20 +144,16 @@ export default {
     }
   },
   components:{
-    pagination
+    // pagination
   },
 
   mounted(){
+    this.getAdminProducts(1)
     // modal
-    productModal = new bootstrap.Modal(document.getElementById('productModal'), {
-      keyboard: false
-    });
+    // productModal = new bootstrap.Modal(document.getElementById('productModal'), {
+    //   keyboard: false
+    // });
 
-    // token
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-    axios.defaults.headers.common.Authorization = token;
-    
-    this.checkAdmin()
   }
 }
 </script>
