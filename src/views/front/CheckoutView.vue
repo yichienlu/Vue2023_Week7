@@ -1,7 +1,33 @@
 <template>
   <div>
-    <h1>Thank you~~~</h1>
-    <h2>感謝您的支持</h2>
-    <router-link to="/">回首頁</router-link>
+    <h1>付款</h1>
+
   </div>
 </template>
+
+<script>
+const { VITE_URL, VITE_PATH } = import.meta.env
+
+export default {
+  data(){
+    return {
+      order: {},
+      orderId: 0
+    }
+  },
+  methods:{
+    payOrder(){
+      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/pay/${this.orderId}`)
+        .then((res) => {
+          console.log(res)
+        })
+        .cath((err) => {
+          console.log(err)
+        })
+    }
+  },
+  mounted(){
+
+  }
+}
+</script>

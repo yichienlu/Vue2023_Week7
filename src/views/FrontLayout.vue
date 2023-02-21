@@ -18,6 +18,9 @@
               <router-link to="/cart" class="nav-link">購物車</router-link>
             </li>
             <li class="nav-item">
+              <router-link to="/articles" class="nav-link">文章列表</router-link>
+            </li>
+            <li class="nav-item">
               <router-link to="/login" class="nav-link">登入</router-link>
             </li>
             <li class="nav-item">
