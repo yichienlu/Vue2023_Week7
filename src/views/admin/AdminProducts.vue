@@ -1,3 +1,5 @@
+<!-- https://github.com/yichienlu/Vue_2023/blob/main/Vue_Week4/admin_products.js -->
+<!-- https://github.com/hexschool/live-vue3-dashboard-vite/blob/main/src/views/Products.vue -->
 <template>
   <div class="container">
     <div class="text-end mt-4">
@@ -49,16 +51,19 @@
         </tr>
       </tbody>
     </table>
-    <!-- <pagination :pages="pagination"  @change-page="getAdminProducts"></pagination> -->
+    <pagination :pages="pagination"  @change-page="getAdminProducts"></pagination>
   </div>
 </template>
 
 <script>
-import adminProductsStore from '../stores/adminProductsStore.js'
+import Pagination from '@/components/PaginationComponent.vue';
+import AdminProductModal from '@/components/AdminProductModal.vue';
+import DeleteModal from '@/components/DeleteModal.vue';
+
 const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default {
-  data(){
+  data () {
     return {
       products:[],
       tempProduct:{
@@ -67,23 +72,25 @@ export default {
       pagination: {}
     }
   },
-  methods: {
+  components: {
+    Pagination, AdminProductModal, DeleteModal
+  },
+  methods:{
     getAdminProducts(page = 1){
       this.$http.get(`${VITE_URL}/api/${VITE_PATH}/admin/products?page=${page}`)
       .then((res)=>{
-        console.log(res.data)
-        // this.pagination = res.data.pagination
+        // console.log(res.data)
+        this.pagination = res.data.pagination
         this.products = res.data.products
       })
     },
     addProduct(){
       this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/product`, {"data":this.tempProduct})
       .then((res)=>{
-        console.log(res.data)
-        // productModal.hide();
-        // alert(res.data.message);
+        // console.log(res.data)
+        productModal.hide();
+        alert(res.data.message);
         this.getAdminProducts()
-        
       })
       .catch((err)=>{
         // console.dir(err.data.message)
@@ -93,9 +100,9 @@ export default {
     editProduct(id){
       this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/product/${id}`,{"data":this.tempProduct})
       .then((res)=>{
-        console.log(res.data)
-        // productModal.hide();
-        // alert(res.data.message);
+        // console.log(res.data)
+        productModal.hide();
+        alert(res.data.message);
         this.getAdminProducts()
       })
       .catch((err)=>{
@@ -144,17 +151,8 @@ export default {
       })
     }
   },
-  components:{
-    // pagination
-  },
-
   mounted(){
-    this.getAdminProducts(1)
-    // modal
-    // productModal = new bootstrap.Modal(document.getElementById('productModal'), {
-    //   keyboard: false
-    // });
-
+    this.getAdminProducts();
   }
 }
 </script>

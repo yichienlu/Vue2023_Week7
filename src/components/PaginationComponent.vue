@@ -27,8 +27,11 @@
         
       }
     },
+    props:['pages'],
     methods: {
-
+      changePage (page) {
+        this.$emit('emitPages', page);
+      }
     }
   }
 </script>

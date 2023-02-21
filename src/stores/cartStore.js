@@ -1,4 +1,6 @@
 import { defineStore } from "pinia"
+import axios from "axios"
+const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default defineStore('cartStore', {
   state: () => ({
@@ -18,9 +20,9 @@ export default defineStore('cartStore', {
   }),
   actions: {
     getCarts () {
-      this.$http.get(`${VITE_URL}/api/${VITE_PATH}/cart`)
+      axios.get(`${VITE_URL}/api/${VITE_PATH}/cart`)
         .then((res) => {
-          // console.log('購物車' , res.data)
+          // console.log('Cart' , res.data)
           this.cart = res.data.data
         })
         .catch((err) => {
@@ -32,7 +34,7 @@ export default defineStore('cartStore', {
         product_id: id,
         qty
       }
-      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/cart/`, { data })
+      axios.post(`${VITE_URL}/api/${VITE_PATH}/cart/`, { data })
         .then((res) => {
           console.log(res.data)
         })
@@ -46,7 +48,7 @@ export default defineStore('cartStore', {
         qty: item.qty
       }
       this.loadingItem = item.id
-      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/cart/${item.id}`, { data }) // 購物車 ID
+      axios.put(`${VITE_URL}/api/${VITE_PATH}/cart/${item.id}`, { data }) // 購物車 ID
         .then((res) => {
           this.cart = res.data.data
           this.getCarts()
@@ -58,7 +60,7 @@ export default defineStore('cartStore', {
     },
     deleteCartItem (item) {
       this.loadingItem = item.id
-      this.$http.delete(`${VITE_URL}/api/${VITE_PATH}/cart/${item.id}`) // 購物車 ID
+      axios.delete(`${VITE_URL}/api/${VITE_PATH}/cart/${item.id}`) // 購物車 ID
         .then((res) => {
           console.log('更新購物車', res.data)
           this.getCarts()
@@ -69,7 +71,7 @@ export default defineStore('cartStore', {
         })
     },
     clearCart () {
-      this.$http.delete(`${VITE_URL}/api/${VITE_PATH}/carts`)
+      axios.delete(`${VITE_URL}/api/${VITE_PATH}/carts`)
         .then(() => {
           this.getCarts()
           this.loadingItem = ''
@@ -80,7 +82,7 @@ export default defineStore('cartStore', {
     },
     createOrder () {
       console.log({data: this.form})
-      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/order`,{ data: this.form })
+      axios.post(`${VITE_URL}/api/${VITE_PATH}/order`,{ data: this.form })
         .then((res) => {
           console.log(res)
         })

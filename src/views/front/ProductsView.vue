@@ -30,9 +30,10 @@
 
 <script>
 import { RouterLink } from 'vue-router'
-import productsStore from '.../stores/productsStore.js'
-import cartStore from '.../stores/cartStore.js'
-const { mapState, mapActions } = 'pinia'
+import { mapState, mapActions } from 'pinia'
+import productsStore from '@/stores/productsStore.js'
+import cartStore from '@/stores/cartStore.js'
+
 const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default {

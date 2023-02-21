@@ -24,7 +24,6 @@
 </template>
 
 <script>
-const { mapState } = Pinia;
 
 export default {
 

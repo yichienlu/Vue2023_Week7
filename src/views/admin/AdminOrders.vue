@@ -55,11 +55,15 @@
       </template>
     </tbody>
   </table>
-    <!-- <pagination :pages="pagination"  @change-page="getOrders"></pagination> -->
+    <pagination :pages="pagination"  @change-page="getOrders"></pagination>
   </div>
 </template>
 
 <script>
+import Pagination from '@/components/PaginationComponent.vue';
+import AdminOrderModal from '@/components/AdminOrderModal.vue';
+import DeleteModal from '@/components/DeleteModal.vue';
+
 const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default {
@@ -70,12 +74,15 @@ export default {
       pagination: {}
     }
   },
+  components: {
+    Pagination, AdminOrderModal, DeleteModal
+  },
   methods: {
     getOrders(page = 1){
       this.$http.get(`${VITE_URL}/api/${VITE_PATH}/admin/orders?page=${page}`)
       .then((res)=>{
-        console.log(res.data)
-        // this.pagination = res.data.pagination
+        // console.log(res.data)
+        this.pagination = res.data.pagination
         this.orders = res.data.orders
       })
       .catch((err) => {
@@ -105,9 +112,6 @@ export default {
         console.dir(err)
       })
     }
-  },
-  components:{
-    // pagination
   },
 
   mounted(){
