@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import adminProductsStore from '../stores/adminProductsStore.js'
 const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default {

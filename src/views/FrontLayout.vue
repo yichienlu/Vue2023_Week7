@@ -37,10 +37,15 @@
 
 <script>
 import { RouterView } from 'vue-router'
+import { mapState } from 'pinia'
+import cartStore  from '../stores/cartStore.js'
 
 export default {
   components: {
     RouterView
+  },
+  computed: {
+    ...mapState(cartStore, ['cart'])
   }
 }
 </script>

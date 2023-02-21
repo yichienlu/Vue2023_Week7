@@ -30,6 +30,9 @@
 
 <script>
 import { RouterLink } from 'vue-router'
+import productsStore from '.../stores/productsStore.js'
+import cartStore from '.../stores/cartStore.js'
+const { mapState, mapActions } = 'pinia'
 const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default {
@@ -38,7 +41,10 @@ export default {
       products: []
     }
   },
-  compoente: {
+  computed: {
+    ...mapState(productsStore, ['sortProducts'])
+  },
+  component: {
     RouterLink
   },
   methods: {
@@ -52,19 +58,7 @@ export default {
           console.log(err)
         })
     },
-    addToCart (id, qty) {
-      const data = {
-        product_id: id,
-        qty
-      }
-      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/cart/`, { data })
-        .then((res) => {
-          console.log(res.data)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
+  ...mapActions(cartStore, ['addToCart'])
   },
   mounted () {
     this.getProducts()

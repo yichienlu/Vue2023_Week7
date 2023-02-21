@@ -43,18 +43,10 @@
           </td>
           <td>
             <div class="btn-group">
-              <button
-                class="btn btn-outline-primary btn-sm"
-                type="button"
-                
-              >
+              <button class="btn btn-outline-primary btn-sm" type="button">
                 檢視
               </button>
-              <button
-                class="btn btn-outline-danger btn-sm"
-                type="button"
-                
-              >
+              <button class="btn btn-outline-danger btn-sm" type="button" @click="deleteOrder(item.id)">
                 刪除
               </button>
             </div>
@@ -107,7 +99,7 @@ export default {
       this.$http.delete(`${VITE_URL}/api/${VITE_PATH}/admin/order/${id}`)
       .then((res)=>{
         console.log(res.data)
-        // this.getOrders()
+        this.getOrders()
       })
       .catch((err)=>{
         console.dir(err)
