@@ -15,7 +15,11 @@
       <template v-for="(item, key) in orders" :key="key">
         <tr v-if="orders.length" :class="{ 'text-secondary': !item.is_paid }">
           <!-- <td>{{ $filters.date(item.create_at) }}</td> -->
-          <td>{{ item.create_at }}</td>
+          <td>
+            {{ item.create_at }}
+            {{ item.id }}
+          
+          </td>
           <td><span v-text="item.user.email" v-if="item.user"></span></td>
           <td>
             <ul class="list-unstyled">
@@ -89,8 +93,8 @@ export default {
         console.log(err)
       })
     },
-    editOrder(id){
-      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/order/${id}`,{"data":this.tempOrder})
+    editOrder(item){
+      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/order/${item.id}`,{"data": item})
       .then((res)=>{
         console.log(res.data)
         // productModal.hide();
@@ -115,7 +119,7 @@ export default {
   },
 
   mounted(){
-    this.getOrders(1)
+    this.getOrders()
     // modal
     // productModal = new bootstrap.Modal(document.getElementById('productModal'), {
     //   keyboard: false

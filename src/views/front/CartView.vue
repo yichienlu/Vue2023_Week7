@@ -217,6 +217,7 @@ export default {
             },
             message: '',
           }
+          this.$router.push(`/checkout/${res.data.orderId}`)
         })
         .catch((err) => {
           console.log(err)

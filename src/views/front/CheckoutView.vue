@@ -1,7 +1,8 @@
 <template>
   <div>
     <h1>付款</h1>
-
+    <div>{{order}}</div>
+    <button class="btn btn-primary" @click="payOrder">付款</button>
   </div>
 </template>
 
@@ -12,22 +13,34 @@ export default {
   data(){
     return {
       order: {},
-      orderId: 0
+      orderId: ''
     }
   },
   methods:{
+    getOrder(){
+      this.$http.get(`${VITE_URL}/api/${VITE_PATH}/order/${this.orderId}`)
+        .then((res) => {
+          console.log(res.data)
+          this.order = res.data.order
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     payOrder(){
       this.$http.post(`${VITE_URL}/api/${VITE_PATH}/pay/${this.orderId}`)
         .then((res) => {
           console.log(res)
+          this.$router.push(`/checkoutSuccess`)
         })
-        .cath((err) => {
+        .catch((err) => {
           console.log(err)
         })
     }
   },
   mounted(){
-
+    this.orderId = this.$route.params.id
+    this.getOrder()
   }
 }
 </script>

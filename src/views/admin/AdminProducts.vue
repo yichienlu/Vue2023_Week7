@@ -1,9 +1,10 @@
 <!-- https://github.com/yichienlu/Vue_2023/blob/main/Vue_Week4/admin_products.js -->
 <!-- https://github.com/hexschool/live-vue3-dashboard-vite/blob/main/src/views/Products.vue -->
+<!-- https://github.com/n0918679182/Vue-week7/blob/master/src/views/admin/AdminProducts.vue -->
 <template>
   <div class="container">
     <div class="text-end mt-4">
-      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal" @click="tempProduct={};tempProduct.imagesUrl=['']">
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adminProductModal" @click="tempProduct={};tempProduct.imagesUrl=['']">
         建立新的產品
       </button>
     </div>
@@ -53,6 +54,16 @@
     </table>
     <pagination :pages="pagination"  @change-page="getAdminProducts"></pagination>
   </div>
+
+  <!-- <div id="productModal" ref="adminProductModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
+           aria-hidden="true">
+        <product-modal :temp-product="tempProduct" :edit-product="editProduct" :add-product="addProduct" @upload-image="uploadImage" @upload-images="uploadImages"></product-modal>
+      </div> -->
+
+      <!-- <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1"
+           aria-labelledby="delProductModalLabel" aria-hidden="true">
+           <del-product-modal :temp-product="tempProduct" :delete-product="deleteProduct"></del-product-modal>
+      </div> -->
 </template>
 
 <script>

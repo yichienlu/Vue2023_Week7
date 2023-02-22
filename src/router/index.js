@@ -29,6 +29,14 @@ const routes = [
         component: () => import('../views/front/CartView.vue')
       },
       {
+        path: 'checkout/:id',
+        component: () => import('../views/front/CheckoutView.vue')
+      },
+      {
+        path: 'checkoutSuccess',
+        component: () => import('../views/front/CheckoutSuccessView.vue')
+      },
+      {
         path: 'articles',
         component: () => import('../views/front/ArticlesView.vue')
       },
@@ -53,7 +61,15 @@ const routes = [
       {
         path: 'orders',
         component: () => import('../views/admin/AdminOrders.vue')
-      }
+      },
+      {
+        path: 'articles',
+        component: () => import('../views/admin/AdminArticles.vue')
+      },
+      {
+        path: 'coupons',
+        component: () => import('../views/admin/AdminCoupons.vue')
+      },
     ]
   },
   {
