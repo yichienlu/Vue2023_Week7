@@ -1,5 +1,5 @@
+<!-- https://github.com/yichienlu/Vue-Live-Week7/blob/main/src/components/AdminProductModal.vue -->
 <template>
-<div id="adminProductModal" ref="adminProductModal" class="modal fade" tabindex="-1">
   <div class="modal-dialog modal-xl">
     <div class="modal-content border-0">
       <div class="modal-header bg-dark text-white">
@@ -16,7 +16,7 @@
                 <div class="mb-3">
                   <h5>主要圖片</h5>
                   <form enctype="multipart/form-data"  method="post">
-                    <input type="file" name="file-to-upload" id="imageUrl"  placeholder="請選擇圖片" @change="$emit('upload-image')" class="form-control">
+                    <input type="file" name="file-to-upload" id="imageUrl" ref="imageUrl" placeholder="請選擇圖片" @change="$emit('upload-image')" class="form-control">
                     <!-- <input type="submit" value="上傳"> -->
                   </form>  
                 </div>
@@ -29,7 +29,7 @@
                         <!-- <label for="imageUrl" class="form-label">輸入次要圖片網址</label>
                         <input type="text" class="form-control" placeholder="請輸入圖片連結" v-model="tempProduct.imagesUrl[index]" id=`imageUrl-${index}`> -->
                         <form enctype="multipart/form-data"  method="post">
-                          <input type="file" name="file-to-upload" id="imagesUrl"  placeholder="請選擇圖片" @change="$emit('upload-images', index)" class="form-control">
+                          <input type="file" name="file-to-upload" id="imagesUrl"  ref="file" placeholder="請選擇圖片" @change="$emit('upload-images', index)" class="form-control">
                           <!-- <input type="submit" value="上傳"> -->
                         </form>  
                     </div>
@@ -110,36 +110,31 @@
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
           取消
         </button>
-        <button type="button" class="btn btn-primary" v-if="tempProduct.id" @click="editProduct(tempProduct.id)">
+        <button type="button" class="btn btn-primary" v-if="tempProduct.id" @click="editProduct(tempProduct, adminProductModal)">
           確認編輯
         </button>
-        <button type="button" class="btn btn-primary" v-else @click="addProduct">
+        <button type="button" class="btn btn-primary" v-else @click="addProduct(tempProduct, adminProductModal)">
           確認新增
         </button>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import {Modal} from 'bootstrap'
+import adminProductsStore from '@/stores/adminProductsStore.js'
+import { mapState, mapActions } from "pinia";
+const { VITE_URL, VITE_PATH } = import.meta.env;
 
 export default {
   data(){
     return {
-      adminProductModal: {},
-      tempProduct:{},
-
+      // tempProduct: {}
     }
   },
-  props:[],
+  props:['tempProduct', 'adminProductModal'],
   methods:{
-
-  },
-  mounted(){
-    this.adminProductModal = new Modal(this.$refs.adminProductModal)
-    console.log(this.adminProductModal)
+    ...mapActions(adminProductsStore, ['addProduct', 'editProduct','uploadImage','uploadImages'])
   }
 }
 

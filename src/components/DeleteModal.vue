@@ -9,24 +9,30 @@
       </div>
       <div class="modal-body">
         是否刪除
-        <strong class="text-danger"></strong> 商品(刪除後將無法恢復)。
+        <strong class="text-danger"></strong> (刪除後將無法恢復)。
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
           取消
         </button>
-        <!-- <button type="button" class="btn btn-danger" @click="deleteProduct(tempProduct.id)" data-bs-toggle="modal" data-bs-target="#delProductModal">
+        <button type="button" class="btn btn-danger" @click="deleteProduct(tempProduct.id, deleteModal)" data-bs-toggle="modal" data-bs-target="#deleteModal">
           確認刪除
-        </button> -->
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import adminProductsStore from '@/stores/adminProductsStore.js'
+import { mapState, mapActions } from "pinia";
+// const { VITE_URL, VITE_PATH } = import.meta.env;
 
 export default {
-
+  props:['tempProduct', 'deleteModal'],
+  methods:{
+    ...mapActions(adminProductsStore, ['deleteProduct'])
+  },
 }
 
 </script>

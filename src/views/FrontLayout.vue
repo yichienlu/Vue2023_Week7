@@ -26,15 +26,18 @@
             <li class="nav-item">
               <router-link to="/admin/products" class="nav-link">去後台</router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/gift" class="nav-link">點此領取神秘禮品</router-link>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
 
     <router-view></router-view>
-    <footer class="text-center bg-primary py-3">
+    <!-- <footer class="text-center bg-primary py-3">
       2023 All rights reserved.
-    </footer>
+    </footer> -->
   </div>
 </template>
 

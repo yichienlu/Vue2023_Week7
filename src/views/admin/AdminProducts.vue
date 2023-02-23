@@ -41,10 +41,10 @@
           </td>
           <td>
             <div class="btn-group">
-              <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#productModal" @click="tempProduct = JSON.parse(JSON.stringify(product))">
+              <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#adminProductModal" @click="tempProduct = JSON.parse(JSON.stringify(product))">
                 編輯
               </button>
-              <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delProductModal" @click="tempProduct=product">
+              <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" @click="tempProduct=product">
                 刪除
               </button>
             </div>
@@ -55,115 +55,50 @@
     <pagination :pages="pagination"  @change-page="getAdminProducts"></pagination>
   </div>
 
-  <!-- <div id="productModal" ref="adminProductModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
-           aria-hidden="true">
-        <product-modal :temp-product="tempProduct" :edit-product="editProduct" :add-product="addProduct" @upload-image="uploadImage" @upload-images="uploadImages"></product-modal>
-      </div> -->
-
-      <!-- <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1"
-           aria-labelledby="delProductModalLabel" aria-hidden="true">
-           <del-product-modal :temp-product="tempProduct" :delete-product="deleteProduct"></del-product-modal>
-      </div> -->
+  <div id="adminProductModal" ref="adminProductModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <admin-product-modal :temp-product="tempProduct" :admin-product-modal="adminProductModal"></admin-product-modal>
+  </div>
+  <div id="deleteModal" ref="deleteModal" class="modal fade"  tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <delete-modal :temp-product="tempProduct" :delete-modal="deleteModal" ></delete-modal>
+  </div>
 </template>
 
 <script>
 import Pagination from '@/components/PaginationComponent.vue';
 import AdminProductModal from '@/components/AdminProductModal.vue';
 import DeleteModal from '@/components/DeleteModal.vue';
-
-const { VITE_URL, VITE_PATH } = import.meta.env
+import adminProductsStore from '@/stores/adminProductsStore.js'
+import { mapState, mapActions } from "pinia";
+import { Modal } from 'bootstrap'
+// const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default {
   data () {
     return {
-      products:[],
+      // products:[],
       tempProduct:{
         imagesUrl:['']
       },
-      pagination: {}
+      // pagination: {}
+      adminProductModal: null,
+      deleteModal: null
     }
+  },
+  computed:{
+    ...mapState(adminProductsStore, ['products', 'pagination'])
   },
   components: {
     Pagination, AdminProductModal, DeleteModal
   },
   methods:{
-    getAdminProducts(page = 1){
-      this.$http.get(`${VITE_URL}/api/${VITE_PATH}/admin/products?page=${page}`)
-      .then((res)=>{
-        // console.log(res.data)
-        this.pagination = res.data.pagination
-        this.products = res.data.products
-      })
-    },
-    addProduct(){
-      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/product`, {"data":this.tempProduct})
-      .then((res)=>{
-        // console.log(res.data)
-        productModal.hide();
-        alert(res.data.message);
-        this.getAdminProducts()
-      })
-      .catch((err)=>{
-        // console.dir(err.data.message)
-        alert(err.data.message)
-      })
-    },
-    editProduct(id){
-      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/product/${id}`,{"data":this.tempProduct})
-      .then((res)=>{
-        // console.log(res.data)
-        productModal.hide();
-        alert(res.data.message);
-        this.getAdminProducts()
-      })
-      .catch((err)=>{
-        // console.dir(err)
-        alert(err.data.message)
-      })
-    },
-    deleteProduct(id){
-      this.$http.delete(`${VITE_URL}/api/${VITE_PATH}/admin/product/${id}`)
-      .then((res)=>{
-        // console.log(res.data)
-        this.getAdminProducts()
-      })
-      .catch((err)=>{
-        console.dir(err)
-      })
-    },
-    uploadImage(){
-      const imageUrl = document.querySelector('#imageUrl')
-      const file = imageUrl.files[0]
-      const formData = new FormData();
-      formData.append('file-to-upload', file)
-
-      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/upload`, formData)
-      .then((res)=>{
-        // console.log(res)
-        this.tempProduct.imageUrl = res.data.imageUrl
-      })
-      .catch((err)=>{
-        console.log(err.response)
-      })
-    },
-    uploadImages(index){
-      const imagesUrl = document.querySelectorAll('#imagesUrl')
-      const file = imagesUrl[index].files[0]
-      const formData = new FormData();
-      formData.append('file-to-upload', file)
-
-      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/upload`, formData)
-      .then((res)=>{
-        // console.log(res)
-        this.tempProduct.imagesUrl[index] = res.data.imageUrl
-      })
-      .catch((err)=>{
-        console.log(err.response)
-      })
-    }
+    ...mapActions(adminProductsStore, ['getAdminProducts'])
   },
   mounted(){
+    console.log()
     this.getAdminProducts();
+    this.adminProductModal = new Modal('#adminProductModal')
+    this.deleteModal = new Modal('#deleteModal')
+
   }
 }
 </script>
