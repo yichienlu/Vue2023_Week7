@@ -4,7 +4,7 @@ const { VITE_URL, VITE_PATH } = import.meta.env;
 
 export default defineStore('adminProductsStore', {
   state: () => ({
-    tempProduct:{},
+    tempProduct:{imagesUrl:['']},
     products:[],
     pagination: {}
   }),
@@ -19,10 +19,12 @@ export default defineStore('adminProductsStore', {
     addProduct(tempProduct, modal){
       axios.post(`${VITE_URL}/api/${VITE_PATH}/admin/product`, {"data": tempProduct})
       .then((res)=>{
-        console.log(res.data)
+        // console.log(res.data)
+        this.clearInputs()
         modal.hide();
-        // alert(res.data);
+        alert(res.data);
         this.getAdminProducts()
+        this.tempProduct = {imagesUrl:['']}
       })
       .catch((err)=>{
         // console.log(err)
@@ -33,7 +35,8 @@ export default defineStore('adminProductsStore', {
       axios.put(`${VITE_URL}/api/${VITE_PATH}/admin/product/${tempProduct.id}`,{"data":tempProduct})
       .then((res)=>{
         // console.log(res.data)
-        modal.hide()
+        this.clearInputs()
+        modal.hide();
         alert(res.data.message);
         this.getAdminProducts()
       })
@@ -46,8 +49,9 @@ export default defineStore('adminProductsStore', {
       console.log(id)
       axios.delete(`${VITE_URL}/api/${VITE_PATH}/admin/product/${id}`)
       .then((res)=>{
-        console.log(res.data)
+        // console.log(res.data.message)
         modal.hide()
+        alert(res.data.message)
         this.getAdminProducts()
       })
       .catch((err)=>{
@@ -55,18 +59,13 @@ export default defineStore('adminProductsStore', {
       })
     },
     uploadImage(){
-      // const imageUrl = document.querySelector('#imageUrl')
-      const imageUrl = this.$refs.imageUrl
+      const imageUrl = document.querySelector('#imageUrl')
       const file = imageUrl.files[0]
-
-      console.log(file)
-
       const formData = new FormData();
       formData.append('file-to-upload', file)
 
       axios.post(`${VITE_URL}/api/${VITE_PATH}/admin/upload`, formData)
       .then((res)=>{
-        console.log(res)
         this.tempProduct.imageUrl = res.data.imageUrl
       })
       .catch((err)=>{
@@ -87,6 +86,18 @@ export default defineStore('adminProductsStore', {
       .catch((err)=>{
         console.log(err.response)
       })
+    },
+    clearInputs() {
+      document.querySelector('#imageUrl').value = null
+      if (Array.isArray(this.tempProduct.imagesUrl)) {
+        this.images = [...document.querySelectorAll('#imagesUrl')]
+        this.images.forEach(function (item) {
+          item.value = null
+        })
+      }
+    },
+    selectTempProduct(product){
+      this.tempProduct = product
     }
   }
 })

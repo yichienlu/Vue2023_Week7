@@ -1,10 +1,7 @@
-<!-- https://github.com/yichienlu/Vue_2023/blob/main/Vue_Week4/admin_products.js -->
-<!-- https://github.com/hexschool/live-vue3-dashboard-vite/blob/main/src/views/Products.vue -->
-<!-- https://github.com/n0918679182/Vue-week7/blob/master/src/views/admin/AdminProducts.vue -->
 <template>
   <div class="container">
     <div class="text-end mt-4">
-      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adminProductModal" @click="tempProduct={};tempProduct.imagesUrl=['']">
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adminProductModal" @click="selectTempProduct({imagesUrl:['']})">
         建立新的產品
       </button>
     </div>
@@ -41,10 +38,10 @@
           </td>
           <td>
             <div class="btn-group">
-              <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#adminProductModal" @click="tempProduct = JSON.parse(JSON.stringify(product))">
+              <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#adminProductModal" @click="selectTempProduct(JSON.parse(JSON.stringify(product)))">
                 編輯
               </button>
-              <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" @click="tempProduct=product">
+              <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" @click="selectTempProduct(product)">
                 刪除
               </button>
             </div>
@@ -56,10 +53,10 @@
   </div>
 
   <div id="adminProductModal" ref="adminProductModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
-    <admin-product-modal :temp-product="tempProduct" :admin-product-modal="adminProductModal"></admin-product-modal>
+    <admin-product-modal :admin-product-modal="adminProductModal" ></admin-product-modal>
   </div>
   <div id="deleteModal" ref="deleteModal" class="modal fade"  tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <delete-modal :temp-product="tempProduct" :delete-modal="deleteModal" ></delete-modal>
+    <delete-modal :delete-modal="deleteModal" ></delete-modal>
   </div>
 </template>
 
@@ -76,22 +73,22 @@ export default {
   data () {
     return {
       // products:[],
-      tempProduct:{
-        imagesUrl:['']
-      },
+      // tempProduct:{
+      //   imagesUrl:['']
+      // },
       // pagination: {}
       adminProductModal: null,
       deleteModal: null
     }
   },
   computed:{
-    ...mapState(adminProductsStore, ['products', 'pagination'])
+    ...mapState(adminProductsStore, ['tempProduct','products', 'pagination'])
   },
   components: {
     Pagination, AdminProductModal, DeleteModal
   },
   methods:{
-    ...mapActions(adminProductsStore, ['getAdminProducts'])
+    ...mapActions(adminProductsStore, ['getAdminProducts', 'selectTempProduct'])
   },
   mounted(){
     console.log()

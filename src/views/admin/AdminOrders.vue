@@ -12,45 +12,46 @@
       </tr>
     </thead>
     <tbody>
-      <template v-for="(item, key) in orders" :key="key">
-        <tr v-if="orders.length" :class="{ 'text-secondary': !item.is_paid }">
-          <!-- <td>{{ $filters.date(item.create_at) }}</td> -->
+      <template v-for="(order, key) in orders" :key="key">
+        <tr v-if="orders.length" :class="{ 'text-secondary': !order.is_paid }">
+          <!-- <td>{{ $filters.date(order.create_at) }}</td> -->
           <td>
-            {{ item.create_at }}
-            {{ item.id }}
+            {{ order.create_at }}
+            {{ order.id }}
           
           </td>
-          <td><span v-text="item.user.email" v-if="item.user"></span></td>
+          <td><span v-text="order.user.email" v-if="order.user"></span></td>
           <td>
             <ul class="list-unstyled">
-              <li v-for="(product, i) in item.products" :key="i">
+              <li v-for="(product, i) in order.products" :key="i">
                 {{ product.product.title }} 數量：{{ product.qty }}
                 {{ product.product.unit }}
               </li>
             </ul>
           </td>
-          <td class="text-right">{{ item.total }}</td>
+          <td class="text-right">{{ order.total }}</td>
           <td>
             <div class="form-check form-switch">
               <input
                 class="form-check-input"
                 type="checkbox"
-                :id="`paidSwitch${item.id}`"
-                v-model="item.is_paid"
-                @change="editOrder(item)"
+                :id="`paidSwitch${order.id}`"
+                v-model="order.is_paid"
+                @change="editOrder(order)"
               />
-              <label class="form-check-label" :for="`paidSwitch${item.id}`">
-                <span v-if="item.is_paid">已付款</span>
+              <label class="form-check-label" :for="`paidSwitch${order.id}`">
+                <span v-if="order.is_paid">已付款</span>
                 <span v-else>未付款</span>
               </label>
             </div>
           </td>
           <td>
             <div class="btn-group">
-              <button class="btn btn-outline-primary btn-sm" type="button">
+              <button class="btn btn-outline-primary btn-sm" type="button" 
+              data-bs-toggle="modal" data-bs-target="#adminOrderModal" @click="selectTempOrder(JSON.parse(JSON.stringify(order)))">
                 檢視
               </button>
-              <button class="btn btn-outline-danger btn-sm" type="button" @click="deleteOrder(item.id)">
+              <button class="btn btn-outline-danger btn-sm" type="button" @click="deleteOrder(order.id)">
                 刪除
               </button>
             </div>
@@ -59,71 +60,45 @@
       </template>
     </tbody>
   </table>
-    <pagination :pages="pagination"  @change-page="getOrders"></pagination>
+    <pagination :pages="pagination"  @change-page="getAdminOrders"></pagination>
+  </div>
+  <div id="adminOrderModal" ref="adminOrderModal" class="modal fade" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+    <admin-order-modal :admin-order-modal="adminOrderModal" ></admin-order-modal>
   </div>
 </template>
 
 <script>
 import Pagination from '@/components/PaginationComponent.vue';
 import AdminOrderModal from '@/components/AdminOrderModal.vue';
-import DeleteModal from '@/components/DeleteModal.vue';
 
-const { VITE_URL, VITE_PATH } = import.meta.env
+import adminOrdersStore from '@/stores/adminOrdersStore.js'
+import { mapState, mapActions } from "pinia";
+import { Modal } from 'bootstrap'
+// const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default {
   data(){
     return {
-      orders:[],
-      tempOrder:{},
-      pagination: {}
+      // orders:[],
+      // tempOrder:{},
+      // pagination: {}
+      adminOrderModal: null
     }
   },
   components: {
-    Pagination, AdminOrderModal, DeleteModal
+    Pagination, AdminOrderModal
+  },
+  computed:{
+    ...mapState(adminOrdersStore, ['tempOrder','orders', 'pagination'])
   },
   methods: {
-    getOrders(page = 1){
-      this.$http.get(`${VITE_URL}/api/${VITE_PATH}/admin/orders?page=${page}`)
-      .then((res)=>{
-        // console.log(res.data)
-        this.pagination = res.data.pagination
-        this.orders = res.data.orders
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    },
-    editOrder(item){
-      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/order/${item.id}`,{"data": item})
-      .then((res)=>{
-        console.log(res.data)
-        // productModal.hide();
-        // alert(res.data.message);
-        // this.getOrders()
-      })
-      .catch((err)=>{
-        // console.dir(err)
-        alert(err.data.message)
-      })
-    },
-    deleteOrder(id){
-      this.$http.delete(`${VITE_URL}/api/${VITE_PATH}/admin/order/${id}`)
-      .then((res)=>{
-        console.log(res.data)
-        this.getOrders()
-      })
-      .catch((err)=>{
-        console.dir(err)
-      })
-    }
+    ...mapActions(adminOrdersStore, ['getAdminOrders', 'editOrder', 'selectTempOrder', 'deleteOrder'])
   },
 
   mounted(){
-    this.getOrders()
+    this.getAdminOrders()
     // modal
-    // productModal = new bootstrap.Modal(document.getElementById('productModal'), {
-    //   keyboard: false
-    // });
+    this.adminOrderModal = new Modal('#adminOrderModal');
   }
 }
 </script>

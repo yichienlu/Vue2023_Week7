@@ -9,7 +9,7 @@
       </div>
       <div class="modal-body">
         是否刪除
-        <strong class="text-danger"></strong> (刪除後將無法恢復)。
+        <strong class="text-danger">{{ tempProduct.title }}</strong> (刪除後將無法恢復)。
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -29,10 +29,14 @@ import { mapState, mapActions } from "pinia";
 // const { VITE_URL, VITE_PATH } = import.meta.env;
 
 export default {
-  props:['tempProduct', 'deleteModal'],
+  props:['deleteModal'],
+  computed:{
+    ...mapState(adminProductsStore, ['tempProduct'])
+  },
   methods:{
     ...mapActions(adminProductsStore, ['deleteProduct'])
   },
+  
 }
 
 </script>

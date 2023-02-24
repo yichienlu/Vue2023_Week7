@@ -1,4 +1,3 @@
-<!-- https://github.com/yichienlu/Vue-Live-Week7/blob/main/src/components/AdminProductModal.vue -->
 <template>
   <div class="modal-dialog modal-xl">
     <div class="modal-content border-0">
@@ -7,7 +6,7 @@
           <span v-if="tempProduct.id">編輯產品</span>
           <span v-else>新增產品</span>
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearInputs()"></button>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -16,7 +15,7 @@
                 <div class="mb-3">
                   <h5>主要圖片</h5>
                   <form enctype="multipart/form-data"  method="post">
-                    <input type="file" name="file-to-upload" id="imageUrl" ref="imageUrl" placeholder="請選擇圖片" @change="$emit('upload-image')" class="form-control">
+                    <input type="file" name="file-to-upload" id="imageUrl" ref="file" placeholder="請選擇圖片" @change="uploadImage()" class="form-control">
                     <!-- <input type="submit" value="上傳"> -->
                   </form>  
                 </div>
@@ -29,8 +28,7 @@
                         <!-- <label for="imageUrl" class="form-label">輸入次要圖片網址</label>
                         <input type="text" class="form-control" placeholder="請輸入圖片連結" v-model="tempProduct.imagesUrl[index]" id=`imageUrl-${index}`> -->
                         <form enctype="multipart/form-data"  method="post">
-                          <input type="file" name="file-to-upload" id="imagesUrl"  ref="file" placeholder="請選擇圖片" @change="$emit('upload-images', index)" class="form-control">
-                          <!-- <input type="submit" value="上傳"> -->
+                          <input type="file" name="file-to-upload" id="imagesUrl" ref="file" placeholder="請選擇圖片" @change="$emit(uploadImages(index))" class="form-control">
                         </form>  
                     </div>
                     <img class="img-fluid" :src="image" alt="">
@@ -107,7 +105,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" @click="clearInputs()">
           取消
         </button>
         <button type="button" class="btn btn-primary" v-if="tempProduct.id" @click="editProduct(tempProduct, adminProductModal)">
@@ -124,18 +122,20 @@
 <script>
 import adminProductsStore from '@/stores/adminProductsStore.js'
 import { mapState, mapActions } from "pinia";
-const { VITE_URL, VITE_PATH } = import.meta.env;
+// const { VITE_URL, VITE_PATH } = import.meta.env;
 
 export default {
   data(){
     return {
-      // tempProduct: {}
     }
   },
-  props:['tempProduct', 'adminProductModal'],
+  props:['adminProductModal'],
   methods:{
-    ...mapActions(adminProductsStore, ['addProduct', 'editProduct','uploadImage','uploadImages'])
-  }
+    ...mapActions(adminProductsStore, ['addProduct', 'editProduct','uploadImage','uploadImages','clearInputs'])
+  },
+  computed:{
+    ...mapState(adminProductsStore, ['tempProduct'])
+  },
 }
 
 </script>
