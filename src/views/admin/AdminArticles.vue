@@ -105,8 +105,8 @@ export default {
         .then((res) => {
           console.log(res)
           // alert(res.data.message)
-          // this.articleModal.hide()
-          // this.getAdminArticles()
+          this.articleModal.hide()
+          this.getAdminArticles()
 
         })
         .catch((err) => {

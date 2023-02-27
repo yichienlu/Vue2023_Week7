@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLogin">
+  <div v-if="isLogin" class="container">
     後台頁面 <br>
     <router-link to="/admin/products">後臺產品列表</router-link> |
     <router-link to="/admin/orders">後臺訂單列表</router-link> |
@@ -35,7 +35,7 @@ export default {
       const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1')
       this.$http.defaults.headers.common.Authorization = token
       this.$http.post(`${VITE_URL}/api/user/check`)
-        .then((res) => {
+        .then(() => {
           // console.log(res)
           this.isLogin = true
         })

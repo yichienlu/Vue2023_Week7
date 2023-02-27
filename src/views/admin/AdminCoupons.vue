@@ -2,7 +2,7 @@
  <div class="container my-5">
     <h1>優惠券管理</h1>
     <div class="text-end mt-3">
-      <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#couponModal" @click="selectTempCoupon({is_enabled: 0})">
+      <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#couponModal" @click="this.tempCoupon = {is_enabled: 0}">
         建立新的優惠券
       </button>
     </div>
@@ -32,7 +32,8 @@
         </td>
         <td>
           <div class="btn-group">
-            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#couponModal" @click="selectTempCoupon(coupon)">
+            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#couponModal" 
+                    @click="this.tempCoupon = JSON.parse(JSON.stringify(coupon))">
               編輯
             </button>
             <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteCoupon(coupon.id)">
@@ -46,7 +47,7 @@
     <pagination :pages="pagination" @change-page="getAdminCoupons"></pagination>
   </div>
   <div id="couponModal" ref="couponModal" class="modal fade" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
-    <coupon-modal :temp-coupon="tempCoupon" :coupon-modal="couponModal" @edit-coupon="editCoupon" @add-coupon="addCoupon"></coupon-modal>
+    <coupon-modal :tempCoupon="tempCoupon" :coupon-modal="couponModal" @edit-coupon="editCoupon" @add-coupon="addCoupon"></coupon-modal>
   </div>
 </template>
 
@@ -81,8 +82,8 @@ export default {
           console.log(err)
         })
     },
-    addCoupon () {
-      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/coupon`, { data: this.tempCoupon })
+    addCoupon (coupon) {
+      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/coupon`, { data: coupon })
         .then((res) => {
           alert(res.data.message)
           this.couponModal.hide()
@@ -94,8 +95,8 @@ export default {
           // alert(err.response.data.message)
         })
     },
-    editCoupon () {
-      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/coupon/${this.tempCoupon.id}`, { data: this.tempCoupon })
+    editCoupon (coupon) {
+      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/coupon/${this.tempCoupon.id}`, { data: coupon })
         .then((res) => {
           alert(res.data.message)
           this.couponModal.hide()
@@ -116,9 +117,6 @@ export default {
         .catch((err) => {
           console.log(err)
         })
-    },
-    selectTempCoupon(coupon){
-      this.tempCoupon = coupon
     }
   },
   mounted(){

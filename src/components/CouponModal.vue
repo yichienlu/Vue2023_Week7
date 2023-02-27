@@ -40,10 +40,10 @@
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
             取消
           </button>
-          <button type="button" class="btn btn-primary" v-if="tempCoupon.id" @click="this.$emit('editCoupon')">
+          <button type="button" class="btn btn-primary" v-if="tempCoupon.id" @click="this.$emit('editCoupon', tempCoupon)">
             確認編輯
           </button>
-          <button type="button" class="btn btn-primary" v-else  @click="this.$emit('addCoupon')">
+          <button type="button" class="btn btn-primary" v-else  @click="this.$emit('addCoupon',tempCoupon)">
             確認新增
           </button>
         </div>
@@ -52,9 +52,15 @@
 </template>
 
 <script>
-export default {
-  props:['couponModal', 'tempCoupon']
 
+export default {
+  data(){
+    return {
+    }
+  },
+  props:['couponModal', 'tempCoupon'],
+  mounted(){
+  }
 }
 
 </script>

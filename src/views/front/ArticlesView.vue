@@ -1,14 +1,17 @@
 <template>
-<h1>文章列表</h1>
-<ul>
-  <li v-for="article in articles">
-    <RouterLink :to="`/article/${article.id}`">{{ article.title }}</RouterLink>
-  </li>
-</ul>
-</template>
+  <div>
+    <h1>文章列表</h1>
+    <ul>
+      <li v-for="article in articles" :key="article.id">
+        <RouterLink :to="`/article/${article.id}`">{{ article.title }}</RouterLink>
+      </li>
+    </ul>
+  </div>
+
+</template>    
 
 <script>
-import { RouterLink } from 'vue-router'
+// import { RouterLink } from 'vue-router'
 const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default {
@@ -21,7 +24,7 @@ export default {
     getArticles() {
       this.$http.get(`${VITE_URL}/api/${VITE_PATH}/articles`)
         .then((res) => {
-          console.log(res.data)
+          // console.log(res.data)
           this.articles = res.data.articles
         })
         .catch((err) => {
