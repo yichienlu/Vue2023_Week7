@@ -12,26 +12,26 @@
         <div class="modal-body">
           <div class="mb-3">
             <label for="title">標題</label>
-            <input type="text" class="form-control" id="title" v-model="tempCoupon.title"
+            <input type="text" class="form-control" id="title" v-model="coupon.title"
                    placeholder="請輸入標題">
           </div>
           <div class="mb-3">
             <label for="coupon_code">優惠碼</label>
-            <input type="text" class="form-control" id="coupon_code" v-model="tempCoupon.code"
+            <input type="text" class="form-control" id="coupon_code" v-model="coupon.code"
                    placeholder="請輸入優惠碼">
           </div>
           <div class="mb-3">
             <label for="due_date">到期日</label>
-            <input type="number" class="form-control" id="due_date" v-model="tempCoupon.due_date">
+            <input type="number" class="form-control" id="due_date" v-model="coupon.due_date">
           </div>
           <div class="mb-3">
             <label for="price">折扣百分比</label>
             <input type="number" class="form-control" id="price"
-            min="0" max="100" v-model.number="tempCoupon.percent" placeholder="請輸入折扣百分比">
+            min="0" max="100" v-model.number="coupon.percent" placeholder="請輸入折扣百分比">
           </div>
           <div class="mb-3">
             <div class="form-check">
-              <input id="is_enabled" class="form-check-input" type="checkbox" :true-value="1" :false-value="0" v-model="tempCoupon.is_enabled" >
+              <input id="is_enabled" class="form-check-input" type="checkbox" :true-value="1" :false-value="0" v-model="coupon.is_enabled" >
               <label class="form-check-label" for="is_enabled">是否啟用</label>
             </div>
           </div>
@@ -40,10 +40,10 @@
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
             取消
           </button>
-          <button type="button" class="btn btn-primary" v-if="tempCoupon.id" @click="this.$emit('editCoupon', tempCoupon)">
+          <button type="button" class="btn btn-primary" v-if="tempCoupon.id" @click="this.$emit('editCoupon', coupon)">
             確認編輯
           </button>
-          <button type="button" class="btn btn-primary" v-else  @click="this.$emit('addCoupon',tempCoupon)">
+          <button type="button" class="btn btn-primary" v-else  @click="this.$emit('addCoupon', coupon)">
             確認新增
           </button>
         </div>
@@ -52,14 +52,47 @@
 </template>
 
 <script>
+// import { Modal } from 'bootstrap'
+// const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default {
   data(){
     return {
+      coupon: this.tempCoupon
     }
   },
   props:['couponModal', 'tempCoupon'],
+  // methods:{
+    // addCoupon (coupon) {
+
+      // console.log(coupon)
+      // this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/coupon`, { data: coupon })
+      //   .then((res) => {
+      //     alert(res.data.message)
+      //     this.couponModal.hide()
+      //     // this.getAdminCoupons()
+
+      //   })
+      //   .catch((err) => {
+      //     console.log(err)
+      //     // alert(err.response.data.message)
+      //   })
+    // },
+  //   editCoupon (coupon) {
+  //     this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/coupon/${this.tempCoupon.id}`, { data: coupon })
+  //       .then((res) => {
+  //         alert(res.data.message)
+  //         this.couponModal.hide()
+  //         // this.getAdminCoupons()
+
+  //       })
+  //       .catch((err) => {
+  //         console.log(err)
+  //       })
+  //   },
+  // },
   mounted(){
+    console.log('modal mounted')
   }
 }
 
