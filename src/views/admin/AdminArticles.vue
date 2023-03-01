@@ -39,7 +39,7 @@
               <button
                 class="btn btn-outline-danger btn-sm"
                 type="button"
-                
+                @click="deleteArticle(article.id)"
               >
                 刪除
               </button>
@@ -77,9 +77,9 @@ export default {
     getAdminArticles(page=1){
       this.$http.get(`${VITE_URL}/api/${VITE_PATH}/admin/articles?page=${page}`)
         .then((res) => {
-          console.log(res.data)
+          // console.log(res.data)
           this.articles = res.data.articles
-        this.pagination = res.data.pagination
+          this.pagination = res.data.pagination
 
         })
         .catch((err) => {
@@ -89,23 +89,18 @@ export default {
     addArticle (article) {
       this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/article`, { data: article })
         .then((res) => {
-          console.log(res)
-
           alert(res.data.message)
           this.articleModal.hide()
           this.getAdminArticles()
         })
         .catch((err) => {
           console.log(err)
-          // alert(err.response.data.message)
         })
     },
     editArticle (article) {
-      console.log(article)
       this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/article/${this.tempArticle.id}`, { data: article })
         .then((res) => {
-          console.log(res)
-          // alert(res.data.message)
+          alert(res.data.message)
           this.articleModal.hide()
           this.getAdminArticles()
 
@@ -126,7 +121,17 @@ export default {
         })
     },
     selectTempArticle(article){
+      if(article.id){
+        this.$http.get(`${VITE_URL}/api/${VITE_PATH}/admin/article/${article.id}`)
+        .then((res) => {
+          this.tempArticle = res.data.article
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      } else {
       this.tempArticle = article
+      }
     }
   },
   mounted(){

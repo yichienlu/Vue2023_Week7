@@ -26,7 +26,6 @@
 <script>
 import adminProductsStore from '@/stores/adminProductsStore.js'
 import { mapState, mapActions } from "pinia";
-// const { VITE_URL, VITE_PATH } = import.meta.env;
 
 export default {
   props:['deleteModal'],

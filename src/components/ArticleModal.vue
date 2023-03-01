@@ -55,34 +55,39 @@
         <div class="col-sm-8">
           <label for="tag" class="form-label">標籤</label>
           <div class="row gx-1 mb-3">
-            <!-- <div
-              class="col-md-2 mb-1"
-              v-for="(label, key) in tempArticle.tag"
-              :key="key">
+            <div class="col-md-2 mb-1"
+              v-for="(label, key) in tempArticle.tag" :key="key">
               <div class="input-group input-group-sm">
                 <input type="text" class="form-control form-control"
                   id="tag" v-model="tempArticle.tag[key]" placeholder="請輸入標籤"/>
                 <button
                   type="button"
-                  class="btn btn-outline-danger"
+                  class="btn btn-danger"
                   @click="tempArticle.tag.splice(key, 1)"
                 >
-                  <i class="bi bi-x"></i>
+                  X
                 </button>
               </div>
             </div>
-            <div
-              class="col-md-2 mb-1"
-              v-if="tempArticle.tag[tempArticle.tag.length - 1] || !tempArticle.tag.length"
-            >
+            <div class="col-md-2 mb-1">
               <button
+                v-if="tempArticle.tag"
                 class="btn btn-outline-primary btn-sm d-block w-100"
                 type="button"
                 @click="tempArticle.tag.push('')"
+                :disabled="tempArticle.tag[tempArticle.tag?.length-1]==''"
               >
                 新增標籤
               </button>
-            </div> -->
+              <button
+                v-else
+                class="btn btn-outline-primary btn-sm d-block w-100"
+                type="button"
+                @click="tempArticle.tag = ['']"
+              >
+                新增標籤
+              </button>
+            </div>
           </div>
           <div class="mb-3">
             <label for="description" class="form-label">文章描述</label>

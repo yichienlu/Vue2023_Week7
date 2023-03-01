@@ -8,25 +8,25 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarMenu">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <router-link to="/about" class="nav-link">About</router-link>
+            <li class="nav-item" @click="this.navbarToggle.hide()">
+              <router-link to="/about" class="nav-link" >About</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="this.navbarToggle.hide()">
               <router-link to="/products" class="nav-link">產品列表</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="this.navbarToggle.hide()">
               <router-link to="/cart" class="nav-link">購物車</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="this.navbarToggle.hide()">
               <router-link to="/articles" class="nav-link">文章列表</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="this.navbarToggle.hide()">
               <router-link to="/login" class="nav-link">登入</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="this.navbarToggle.hide()">
               <router-link to="/admin/products" class="nav-link">去後台</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="this.navbarToggle.hide()">
               <router-link to="/gift" class="nav-link">點此領取神秘禮品</router-link>
             </li>
           </ul>
@@ -45,13 +45,25 @@
 import { RouterView } from 'vue-router'
 import { mapState } from 'pinia'
 import cartStore  from '../stores/cartStore.js'
+import { Collapse } from 'bootstrap'
 
 export default {
+  data(){
+    return {
+      navbarToggle: null
+    }
+  },
   components: {
     RouterView
   },
   computed: {
     ...mapState(cartStore, ['cart'])
+  },
+  mounted(){
+    this.navbarToggle = new Collapse('#navbarMenu',{
+      toggle: false
+    })
+
   }
 }
 </script>
