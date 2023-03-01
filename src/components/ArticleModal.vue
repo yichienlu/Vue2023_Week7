@@ -101,8 +101,11 @@
               v-model="tempArticle.content"
             ></ckeditor> -->
             <textarea 
-            type="text"
-              class="form-control" id="content" v-model="tempArticle.content"></textarea>
+              type="text"
+              class="form-control" 
+              id="content" 
+              v-model="tempArticle.content" 
+              placeholder="請輸入文章內容"></textarea>
           </div>
           <div class="mb-3">
             <div class="form-check">
@@ -128,10 +131,10 @@
       >
         取消
       </button>
-      <button type="button" class="btn btn-primary" v-if="tempArticle.id" @click="this.$emit('editArticle')">
+      <button type="button" class="btn btn-primary" v-if="tempArticle.id" @click="this.$emit('editArticle', article)">
             確認編輯
           </button>
-          <button type="button" class="btn btn-primary" v-else  @click="this.$emit('addArticle')">
+          <button type="button" class="btn btn-primary" v-else  @click="this.$emit('addArticle', article)">
             確認新增
           </button>
     </div>
@@ -142,6 +145,16 @@
 
 <script>
 export default {
-  props: ['articleModal', 'tempArticle']
+  data(){
+    return {
+      tempArticle: {}
+    }
+  },
+  props: ['articleModal', 'article'],
+  watch: {
+    article(){
+      this.tempArticle = this.article
+    }
+  }
 }
 </script>

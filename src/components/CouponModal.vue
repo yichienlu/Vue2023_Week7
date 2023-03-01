@@ -52,8 +52,6 @@
 </template>
 
 <script>
-// import { Modal } from 'bootstrap'
-// const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default {
   data(){
@@ -66,38 +64,6 @@ export default {
     coupon(){
       this.tempCoupon = this.coupon
     }
-  },
-  // methods:{
-    // addCoupon (coupon) {
-
-      // console.log(coupon)
-      // this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/coupon`, { data: coupon })
-      //   .then((res) => {
-      //     alert(res.data.message)
-      //     this.couponModal.hide()
-      //     // this.getAdminCoupons()
-
-      //   })
-      //   .catch((err) => {
-      //     console.log(err)
-      //     // alert(err.response.data.message)
-      //   })
-    // },
-  //   editCoupon (coupon) {
-  //     this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/coupon/${this.tempCoupon.id}`, { data: coupon })
-  //       .then((res) => {
-  //         alert(res.data.message)
-  //         this.couponModal.hide()
-  //         // this.getAdminCoupons()
-
-  //       })
-  //       .catch((err) => {
-  //         console.log(err)
-  //       })
-  //   },
-  // },
-  mounted(){
-    console.log('modal mounted')
   }
 }
 

@@ -44,6 +44,8 @@
       </tr>
       </tbody>
     </table>
+    <pagination :pages="pagination"  @change-page="getAdminCoupons"></pagination>
+
   </div>
   <div id="couponModal" ref="couponModal" class="modal fade" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
     <coupon-modal :coupon="tempCoupon" :coupon-modal="couponModal" @edit-coupon="editCoupon" @add-coupon="addCoupon"></coupon-modal>
@@ -51,6 +53,7 @@
 </template>
 
 <script>
+import Pagination from '@/components/PaginationComponent.vue';
 import CouponModal from '@/components/CouponModal.vue'
 import { Modal } from 'bootstrap'
 
@@ -61,49 +64,48 @@ export default {
     return {
       tempCoupon: {},
       coupons: [],
-      couponModal: null
+      couponModal: null,
+      pagination:{}
     }
   },
   components: {
-    CouponModal
+    CouponModal, Pagination
   },
   methods: {
-    getAdminCoupons(){
-      this.$http.get(`${VITE_URL}/api/${VITE_PATH}/admin/coupons`)
+    getAdminCoupons(page=1){
+      this.$http.get(`${VITE_URL}/api/${VITE_PATH}/admin/coupons/?page=${page}`)
         .then((res) => {
-          // console.log(res.data)
+          // console.log(res)
           this.coupons = res.data.coupons
+          this.pagination = res.data.pagination
         })
         .catch((err) => {
           console.log(err)
         })
     },
     addCoupon (coupon) {
-      console.log(coupon)
-      // this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/coupon`, { data: coupon })
-      //   .then((res) => {
-      //     alert(res.data.message)
-      //     this.couponModal.hide()
-      //     this.getAdminCoupons()
+      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/coupon`, { data: coupon })
+        .then((res) => {
+          alert(res.data.message)
+          this.couponModal.hide()
+          this.getAdminCoupons()
 
-      //   })
-      //   .catch((err) => {
-      //     console.log(err)
-      //     // alert(err.response.data.message)
-      //   })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     editCoupon (coupon) {
-      console.log(coupon)
-      // this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/coupon/${this.tempCoupon.id}`, { data: coupon })
-      //   .then((res) => {
-      //     alert(res.data.message)
-      //     this.couponModal.hide()
-      //     this.getAdminCoupons()
+      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/coupon/${this.tempCoupon.id}`, { data: coupon })
+        .then((res) => {
+          alert(res.data.message)
+          this.couponModal.hide()
+          this.getAdminCoupons()
 
-      //   })
-      //   .catch((err) => {
-      //     console.log(err)
-      //   })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     deleteCoupon (id) {
       this.$http.delete(`${VITE_URL}/api/${VITE_PATH}/admin/coupon/${id}`)

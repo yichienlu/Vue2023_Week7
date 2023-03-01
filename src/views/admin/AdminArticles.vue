@@ -51,7 +51,7 @@
     <pagination :pages="pagination" @change-page="getAdminArticles"></pagination>
   </div>
   <div id="articleModal" ref="articleModal" class="modal fade" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
-    <article-modal :temp-article="tempArticle" :article-modal="articleModal" @edit-article="editArticle" @add-article="addArticle"></article-modal>
+    <article-modal :article="tempArticle" :article-modal="articleModal" @edit-article="editArticle" @add-article="addArticle"></article-modal>
   </div>
 </template>
 
@@ -77,7 +77,7 @@ export default {
     getAdminArticles(page=1){
       this.$http.get(`${VITE_URL}/api/${VITE_PATH}/admin/articles?page=${page}`)
         .then((res) => {
-          // console.log(res.data)
+          console.log(res.data)
           this.articles = res.data.articles
         this.pagination = res.data.pagination
 
@@ -86,8 +86,8 @@ export default {
           console.log(err)
         })
     },
-    addArticle () {
-      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/article`, { data: this.tempArticle })
+    addArticle (article) {
+      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/admin/article`, { data: article })
         .then((res) => {
           console.log(res)
 
@@ -100,8 +100,9 @@ export default {
           // alert(err.response.data.message)
         })
     },
-    editArticle () {
-      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/article/${this.tempArticle.id}`, { data: this.tempArticle })
+    editArticle (article) {
+      console.log(article)
+      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/admin/article/${this.tempArticle.id}`, { data: article })
         .then((res) => {
           console.log(res)
           // alert(res.data.message)
