@@ -20,6 +20,7 @@
       <tr v-for="(coupon, key) in coupons" :key="key">
         <td>
           {{ coupon.title }}
+          {{ typeof(coupon.title) }}
         </td>
         <td>{{ coupon.percent }}%</td>
         <td>

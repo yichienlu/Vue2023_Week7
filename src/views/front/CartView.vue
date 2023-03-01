@@ -28,7 +28,7 @@
               </td>
               <td>
                 {{ item.product.title }}
-                <div class="text-success">已套用優惠券</div>
+                <!-- <div class="text-success">已套用優惠券</div> -->
               </td>
               <td>
                 <div class="input-group input-group-sm">
@@ -56,11 +56,35 @@
             <td class="text-end">{{ cart.total }}</td>
           </tr>
           <tr>
-            <td colspan="3" class="text-end text-success">折扣價</td>
-            <td class="text-end text-success">{{ cart.final_total }}</td>
+            <td colspan="3" class="text-end text-success">
+              <div v-if="cart.carts[0].coupon">
+                已套用折價券 {{ cart.carts[0].coupon.title }} 
+              </div>
+            </td>
+            <td class="text-end text-success">
+              折扣價{{ cart.final_total }}</td>
           </tr>
         </tfoot>
       </table>
+      <div class="input-group mb-3 input-group-sm">
+        <input
+          type="text"
+          class="form-control"
+          v-model="coupon_code"
+          placeholder="請輸入優惠碼"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            @click="addCouponCode"
+          >
+            套用優惠碼
+          </button>
+        </div>
+      </div>
+
+      
     </template>
     <div class="text-center" v-else>購物車空空如也，<router-link to="/products" class="">去購物</router-link></div>
 
@@ -114,6 +138,7 @@ export default {
       products: [],
       productId: '',
       cart: {},
+      coupon_code: '',
       form: {
         user: {
           name: '',
@@ -130,99 +155,99 @@ export default {
   //   ...mapState(cartStore, [''])
   // },
   methods: {
-    // ...mapActions(cartStore, ['addToCart', 'getCarts', 'updateCartItem', 'deleteCartItem', 'clearCart', 'createOrder'])
-    getProducts(){
-      this.$http.get(`${apiUrl}/api/${apiPath}/products/all`)
-      .then((res)=>{
-        // console.log('產品列表：' , res.data.products[0]);
-        this.products = res.data.products;
+    ...mapActions(cartStore, ['getCarts', 'updateCartItem', 'deleteCartItem', 'clearCart', 'createOrder']),
+    // getCarts () {
+    //   this.$http.get(`${VITE_URL}/api/${VITE_PATH}/cart`)
+    //     .then((res) => {
+    //       // console.log('Cart' , res.data)
+    //       this.cart = res.data.data
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
+    // addToCart (id, qty) {
+    //   const data = {
+    //     product_id: id,
+    //     qty
+    //   }
+    //   this.$http.post(`${VITE_URL}/api/${VITE_PATH}/cart/`, { data })
+    //     .then((res) => {
+    //       console.log(res.data)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
+    // updateCartItem (item) {
+    //   const data = {
+    //     product_id: item.product.id,
+    //     qty: item.qty
+    //   }
+    //   this.loadingItem = item.id
+    //   this.$http.put(`${VITE_URL}/api/${VITE_PATH}/cart/${item.id}`, { data }) // 購物車 ID
+    //     .then((res) => {
+    //       this.cart = res.data.data
+    //       this.getCarts()
+    //       this.loadingItem = ''
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
+    // deleteCartItem (item) {
+    //   this.loadingItem = item.id
+    //   this.$http.delete(`${VITE_URL}/api/${VITE_PATH}/cart/${item.id}`) // 購物車 ID
+    //     .then((res) => {
+    //       console.log('更新購物車', res.data)
+    //       this.getCarts()
+    //       this.loadingItem = ''
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
+    // clearCart () {
+    //   this.$http.delete(`${VITE_URL}/api/${VITE_PATH}/carts`)
+    //     .then(() => {
+    //       this.getCarts()
+    //       this.loadingItem = ''
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
+    addCouponCode(){
+      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/coupon`, {data: { code: this.coupon_code }})
+      .then((res) => {
+        // console.log(res.data)
+        this.getCarts()
       })
-      .catch((err)=>{
+      .catch((err) => {
         console.log(err)
       })
     },
-    getCarts () {
-      this.$http.get(`${VITE_URL}/api/${VITE_PATH}/cart`)
-        .then((res) => {
-          // console.log('Cart' , res.data)
-          this.cart = res.data.data
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-    addToCart (id, qty) {
-      const data = {
-        product_id: id,
-        qty
-      }
-      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/cart/`, { data })
-        .then((res) => {
-          console.log(res.data)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-    updateCartItem (item) {
-      const data = {
-        product_id: item.product.id,
-        qty: item.qty
-      }
-      this.loadingItem = item.id
-      this.$http.put(`${VITE_URL}/api/${VITE_PATH}/cart/${item.id}`, { data }) // 購物車 ID
-        .then((res) => {
-          this.cart = res.data.data
-          this.getCarts()
-          this.loadingItem = ''
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-    deleteCartItem (item) {
-      this.loadingItem = item.id
-      this.$http.delete(`${VITE_URL}/api/${VITE_PATH}/cart/${item.id}`) // 購物車 ID
-        .then((res) => {
-          console.log('更新購物車', res.data)
-          this.getCarts()
-          this.loadingItem = ''
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-    clearCart () {
-      this.$http.delete(`${VITE_URL}/api/${VITE_PATH}/carts`)
-        .then(() => {
-          this.getCarts()
-          this.loadingItem = ''
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
-    createOrder () {
-      console.log({data: this.form})
-      this.$http.post(`${VITE_URL}/api/${VITE_PATH}/order`,{ data: this.form })
-        .then((res) => {
-          console.log(res)
-          this.getCarts()
-          this.form = {
-            user: {
-              name: '',
-              email: '',
-              tel: '',
-              address: '',
-            },
-            message: '',
-          }
-          this.$router.push(`/checkout/${res.data.orderId}`)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
+    // createOrder () {
+    //   // console.log({data: this.form})
+    //   this.$http.post(`${VITE_URL}/api/${VITE_PATH}/order`,{ data: this.form })
+    //     .then((res) => {
+    //       console.log(res)
+    //       this.getCarts()
+    //       this.form = {
+    //         user: {
+    //           name: '',
+    //           email: '',
+    //           tel: '',
+    //           address: '',
+    //         },
+    //         message: '',
+    //       }
+    //       this.$router.push(`/checkout/${res.data.orderId}`)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
     isPhone (value) {
       const phoneNumber = /^(09)[0-9]{8}$/
       return phoneNumber.test(value) ? true : '需要正確的電話號碼'

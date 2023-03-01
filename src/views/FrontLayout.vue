@@ -15,7 +15,10 @@
               <router-link to="/products" class="nav-link">產品列表</router-link>
             </li>
             <li class="nav-item" @click="this.navbarToggle.hide()">
-              <router-link to="/cart" class="nav-link">購物車</router-link>
+              <router-link to="/cart" class="nav-link">
+                購物車
+                <small class="badge rounded-pill bg-danger">{{ cart.length }}</small>
+              </router-link>
             </li>
             <li class="nav-item" @click="this.navbarToggle.hide()">
               <router-link to="/articles" class="nav-link">文章列表</router-link>
@@ -42,8 +45,8 @@
 </template>
 
 <script>
-import { RouterView } from 'vue-router'
-import { mapState } from 'pinia'
+import { RouterView, RouterLink } from 'vue-router'
+import { mapState, mapActions } from 'pinia'
 import cartStore  from '../stores/cartStore.js'
 import { Collapse } from 'bootstrap'
 
@@ -54,16 +57,20 @@ export default {
     }
   },
   components: {
-    RouterView
+    RouterView,
+    RouterLink
   },
   computed: {
     ...mapState(cartStore, ['cart'])
+  },
+  methods: {
+    ...mapActions(cartStore, ['getCarts'])
   },
   mounted(){
     this.navbarToggle = new Collapse('#navbarMenu',{
       toggle: false
     })
-
+    this.getCarts()
   }
 }
 </script>
