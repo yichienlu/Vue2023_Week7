@@ -1,7 +1,7 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg bg-primary">
+      <div class="container">
         <router-link to="/"  class="navbar-brand">PET PET</router-link>
         <button class="navbar-toggler ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -17,7 +17,7 @@
             <li class="nav-item" @click="this.navbarToggle.hide()">
               <router-link to="/cart" class="nav-link">
                 購物車
-                <small class="badge rounded-pill bg-danger">{{ cart.length }}</small>
+                <small class="badge rounded-pill bg-danger">{{ cart.carts?.length }}</small>
               </router-link>
             </li>
             <li class="nav-item" @click="this.navbarToggle.hide()">
@@ -38,9 +38,9 @@
     </nav>
 
     <router-view></router-view>
-    <!-- <footer class="text-center bg-primary py-3">
+    <footer class="text-center bg-primary py-3">
       2023 All rights reserved.
-    </footer> -->
+    </footer>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h2>產品列表頁面</h2>
     <table class="table">
       <thead>

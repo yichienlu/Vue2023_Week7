@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h1>{{ product.title }}</h1>
     <img :src="product.imageUrl" height="200" alt="">
     <div class="fs-4" v-if="product.price==product.origin_price">{{ product.price }} 元</div>

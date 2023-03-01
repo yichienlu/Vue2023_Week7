@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h1>文章列表</h1>
     <ul>
       <li v-for="article in articles" :key="article.id">

@@ -4,9 +4,6 @@ const { VITE_URL, VITE_PATH } = import.meta.env
 
 export default defineStore('cartStore', {
   state: () => ({
-    cartNum: 0,
-    products: [],
-    productId: '',
     cart: {},
     form: {
       user: {
@@ -23,10 +20,7 @@ export default defineStore('cartStore', {
     getCarts () {
       axios.get(`${VITE_URL}/api/${VITE_PATH}/cart`)
         .then((res) => {
-          // console.log('Cart' , res.data)
-          this.cart = res.data.data.carts
-          // console.log(this.cart.length)
-
+          this.cart = res.data.data
         })
         .catch((err) => {
           console.log(err)

@@ -4,7 +4,7 @@
 
     <h2>{{ article.title }}</h2>
     <small>{{ article.author }}</small>
-    <p>{{ article.content }}</p>    
+    <p id="content"></p>    
   </div>
 
 </template>
@@ -24,6 +24,7 @@ export default {
       .then((res) => {
           // console.log(res.data)
           this.article = res.data.article
+          document.querySelector('#content').innerHTML = res.data.article.content
         })
         .catch((err) => {
           console.log(err)
