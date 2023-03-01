@@ -100,17 +100,17 @@
             ></textarea>
           </div>
           <div class="mb-3">
-            <!-- <ckeditor
+            <ckeditor
               :editor="editor"
               :config="editorConfig"
               v-model="tempArticle.content"
-            ></ckeditor> -->
-            <textarea 
+            ></ckeditor>
+            <!-- <textarea 
               type="text"
               class="form-control" 
               id="content" 
               v-model="tempArticle.content" 
-              placeholder="請輸入文章內容"></textarea>
+              placeholder="請輸入文章內容"></textarea> -->
           </div>
           <div class="mb-3">
             <div class="form-check">
@@ -149,10 +149,24 @@
 </template>
 
 <script>
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import Font from '@ckeditor/ckeditor5-font/src/font';
+
 export default {
   data(){
     return {
-      tempArticle: {}
+      tempArticle: {},
+
+      editor: ClassicEditor,
+      editorData: '<p>Hello world!!</p>',
+      editorConfig: {
+        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#installation
+        plugins:[Font],
+        toolbar: ['fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor']
+      },
+      writer: {
+        enter: '<br>'
+      }
     }
   },
   props: ['articleModal', 'article'],

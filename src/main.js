@@ -6,6 +6,7 @@ import VueAxios from 'vue-axios'
 
 import App from './App.vue' // 來自src資料夾
 import router from './router'
+import CKEditor from '@ckeditor/ckeditor5-vue'
 
 import 'bootstrap'
 import './assets/all.scss'
@@ -31,6 +32,7 @@ app.component('VForm', Form)
 app.component('VField', Field)
 app.component('ErrorMessage', ErrorMessage)
 // 插件
+app.use(CKEditor)
 app.use(createPinia()) 
 app.use(router)
 app.use(VueAxios, axios)
