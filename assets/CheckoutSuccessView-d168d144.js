@@ -1,1 +1,0 @@
-import{_ as o,r as s,o as n,c,e as a,w as r,F as _,d as e,f as l}from"./index-10e837fa.js";const u={},d=e("h1",null,"付款完成",-1),i=e("h2",null,"感謝您的支持",-1);function p(f,h,m,k,x,V){const t=s("router-link");return n(),c(_,null,[d,i,a(t,{to:"/"},{default:r(()=>[l("回首頁")]),_:1})],64)}const w=o(u,[["render",p]]);export{w as default};
