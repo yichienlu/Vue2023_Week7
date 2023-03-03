@@ -1,0 +1,1 @@
+import{_ as t,r,o as s,c as n,e as c,w as a,d as e,f as _}from"./index-10e837fa.js";const l={},d={class:"container"},i=e("h1",null,"404",-1),f=e("h2",null,"騙你 der lar ㄏㄏ",-1);function u(h,m){const o=r("router-link");return s(),n("div",d,[i,f,c(o,{to:"/"},{default:a(()=>[_("回首頁")]),_:1})])}const x=t(l,[["render",u]]);export{x as default};
