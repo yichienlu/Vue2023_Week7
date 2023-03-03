@@ -22,7 +22,8 @@
           </div>
           <div class="mb-3">
             <label for="due_date">到期日</label>
-            <input type="number" class="form-control" id="due_date" v-model="tempCoupon.due_date">
+            <input type="date" class="form-control" id="due_date" v-model="due_date">
+            <!-- <input type="number" class="form-control" id="due_date" v-model="tempCoupon.due_date"> -->
           </div>
           <div class="mb-3">
             <label for="price">折扣百分比</label>
@@ -56,13 +57,19 @@
 export default {
   data(){
     return {
-      tempCoupon:{}
+      tempCoupon:{},
+      due_date:0
     }
   },
   props:['couponModal', 'coupon'],
   watch:{
     coupon(){
       this.tempCoupon = this.coupon
+      var date = new Date(this.tempCoupon.due_date*1000)
+      this.due_date = `${date.getFullYear()}-${ date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1}-${date.getDate() < 10 ? '0'+(date.getDate()) : date.getDate()}`
+    },
+    due_date() {
+      this.tempCoupon.due_date = Math.floor(new Date(this.due_date) / 1000);
     }
   }
 }

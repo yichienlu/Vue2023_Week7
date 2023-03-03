@@ -14,12 +14,7 @@
     <tbody>
       <template v-for="(order, key) in orders" :key="key">
         <tr v-if="orders.length" :class="{ 'text-secondary': !order.is_paid }">
-          <!-- <td>{{ $filters.date(order.create_at) }}</td> -->
-          <td>
-            {{ order.create_at }}
-            {{ order.id }}
-          
-          </td>
+          <td>{{ $filters.date(order.create_at) }}</td>
           <td><span v-text="order.user.email" v-if="order.user"></span></td>
           <td>
             <ul class="list-unstyled">
@@ -29,7 +24,7 @@
               </li>
             </ul>
           </td>
-          <td class="text-right">{{ order.total }}</td>
+          <td class="text-right">$ {{ $filters.currency(order.total) }}</td>
           <td>
             <div class="form-check form-switch">
               <input

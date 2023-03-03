@@ -24,8 +24,7 @@
         </td>
         <td>{{ coupon.percent }}%</td>
         <td>
-          <!-- {{ $filters.date(coupon.due_date) }} -->
-          {{ coupon.due_date }}
+          {{ $filters.date(coupon.due_date) }}
         </td>
         <td>
           <span v-if="coupon.is_enabled === 1" class="text-success">啟用</span>

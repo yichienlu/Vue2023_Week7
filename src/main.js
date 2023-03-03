@@ -6,10 +6,10 @@ import VueAxios from 'vue-axios'
 
 import App from './App.vue' // 來自src資料夾
 import router from './router'
-import CKEditor from '@ckeditor/ckeditor5-vue'
 
 import 'bootstrap'
 import './assets/all.scss'
+import { date, currency } from './methods/filters';
 
 import { Form, Field, ErrorMessage, defineRule, configure } from 'vee-validate'
 import AllRules from '@vee-validate/rules'
@@ -27,12 +27,16 @@ setLocale('zh_TW')
 
 const app = createApp(App)
 
+app.config.globalProperties.$filters = {
+  date,
+  currency,
+};
+
 // 元件
 app.component('VForm', Form)
 app.component('VField', Field)
 app.component('ErrorMessage', ErrorMessage)
 // 插件
-app.use(CKEditor)
 app.use(createPinia()) 
 app.use(router)
 app.use(VueAxios, axios)

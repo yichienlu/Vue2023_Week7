@@ -14,7 +14,7 @@
             <img :src="product.imageUrl" width="100" height="100" alt="" class="object-fit-cover">
             {{ product.title }}
           </td>
-          <td>{{ product.price }}</td>
+          <td>$ {{ $filters.currency(product.price) }}</td>
           <td>{{ product.num }}</td>
           <td>
             <RouterLink :to="`/product/${product.id}`">

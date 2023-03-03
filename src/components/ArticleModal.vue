@@ -48,8 +48,7 @@
           </div>
           <div class="mb-3">
             <label for="create_at">文章建立日期</label>
-            <input type="number" class="form-control" id="create_at" v-model="tempArticle.create_at"/>
-            <!-- <input type="date" class="form-control" id="create_at" v-model="tempArticle.create_at"/> -->
+            <input type="date" class="form-control" id="create_at" v-model="this.create_at"/>
           </div>
         </div>
         <div class="col-sm-8">
@@ -100,17 +99,12 @@
             ></textarea>
           </div>
           <div class="mb-3">
-            <ckeditor
+            <!-- <ckeditor
               :editor="editor"
               :config="editorConfig"
               v-model="tempArticle.content"
-            ></ckeditor>
-            <!-- <textarea 
-              type="text"
-              class="form-control" 
-              id="content" 
-              v-model="tempArticle.content" 
-              placeholder="請輸入文章內容"></textarea> -->
+            ></ckeditor> -->
+            <editor v-model="tempArticle.content" :init="init"></editor>
           </div>
           <div class="mb-3">
             <div class="form-check">
@@ -133,6 +127,7 @@
         type="button"
         class="btn btn-outline-secondary"
         data-bs-dismiss="modal"
+        @click="tempArticle = {}"
       >
         取消
       </button>
@@ -145,35 +140,78 @@
     </div>
   </div>
 </div>
-
 </template>
 
 <script>
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import Font from '@ckeditor/ckeditor5-font/src/font';
+import tinymce from 'tinymce/tinymce.js'
+// 外觀
+import 'tinymce/skins/ui/oxide/skin.css'
+import 'tinymce/themes/silver'
+// Icon
+import 'tinymce/icons/default'
+// 用到的外掛
+import 'tinymce/plugins/emoticons';
+import 'tinymce/plugins/emoticons/js/emojis.js';
+import 'tinymce/plugins/table';
+import 'tinymce/plugins/quickbars';
+// 語言包
+import 'tinymce-i18n/langs5/zh_TW.js'
+// TinyMCE-Vue
+import Editor from '@tinymce/tinymce-vue'
 
 export default {
   data(){
     return {
       tempArticle: {},
+      create_at: 0,
 
-      editor: ClassicEditor,
-      editorData: '<p>Hello world!!</p>',
-      editorConfig: {
-        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#installation
-        plugins:[Font],
-        toolbar: ['fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor']
+      init: {
+        language: 'zh_TW',
+        height: 500,
+        menubar: false,
+        content_css: false,
+        skin: false,
+        plugins: this.plugins,
+        toolbar: this.toolbar,
+        quickbars_insert_toolbar: false,
+        branding: false,
       },
-      writer: {
-        enter: '<br>'
-      }
     }
   },
-  props: ['articleModal', 'article'],
+  components: {
+    Editor,
+  },
+  props: {
+    'articleModal':{}, 
+    'article':{},
+    value: {
+      type: String,
+      default: '',
+    },
+    plugins: {
+      type: [String, Array],
+      default: 'quickbars emoticons table',
+    },
+    toolbar: {
+      type: [String, Array],
+      default:
+        ' bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify|bullist numlist |outdent indent blockquote | undo redo | axupimgs | removeformat | emoticons |table',
+    },
+  },
+
   watch: {
     article(){
-      this.tempArticle = this.article
-    }
+      this.tempArticle = this.article;
+      var date = new Date(this.tempArticle.create_at*1000)
+      this.create_at = `${date.getFullYear()}-${ date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1}-${date.getDate() < 10 ? '0'+(date.getDate()) : date.getDate()}` ;
+    },
+    create_at() {
+      this.tempArticle.create_at = Math.floor(new Date(this.create_at) / 1000);
+    },
+
+  },
+  mounted(){
+    tinymce.init({})
   }
 }
 </script>

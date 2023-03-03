@@ -2,8 +2,8 @@
   <div class="container">
     <h1>{{ product.title }}</h1>
     <img :src="product.imageUrl" height="200" alt="">
-    <div class="fs-4" v-if="product.price==product.origin_price">{{ product.price }} 元</div>
-    <div class="fs-4" v-else><small class="fs-6"><del>{{ product.origin_price }}</del></small> {{ product.price }} 元</div>
+    <div class="fs-4" v-if="product.price==product.origin_price">$ {{$filters.currency(product.price) }} 元</div>
+    <div class="fs-4" v-else><small class="fs-6"><del>$ {{ $filters.currency(product.origin_price) }}</del></small> $ {{ $filters.currency(product.price) }} 元</div>
   </div>
 </template>
 

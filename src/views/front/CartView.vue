@@ -45,15 +45,15 @@
                 </div>
               </td>
               <td class="text-end">
-                {{ item.total }}
-                <small class="text-success">折扣價：{{ item.final_total }}</small>
+                $ {{ $filters.currency(item.total) }}
+                <small class="text-success">折扣價：$ {{ $filters.currency(item.final_total) }}</small>
               </td>
             </tr>
         </tbody>
         <tfoot>
           <tr>
             <td colspan="3" class="text-end">總計</td>
-            <td class="text-end">{{ cart.total }}</td>
+            <td class="text-end">$ {{$filters.currency(cart.total) }}</td>
           </tr>
           <tr>
             <td colspan="3" class="text-end text-success">
@@ -62,7 +62,7 @@
               </div>
             </td>
             <td class="text-end text-success">
-              折扣價{{ cart.final_total }}</td>
+              折扣價：$ {{ $filters.currency(cart.final_total) }}</td>
           </tr>
         </tfoot>
       </table>
